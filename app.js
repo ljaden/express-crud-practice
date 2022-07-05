@@ -5,7 +5,10 @@ const app = express();
 
 // middleware - function that can modifyy the incoming request
 app.use(express.json());
-
+app.use((req,res,next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+})
 // data
 const tours = JSON.parse(fs.readFileSync("./data/tours-simple.json"));
 
@@ -13,6 +16,7 @@ const getAllTours = (req, res) => {
   res.status(200).json({
     status: "success",
     results: tours.length,
+    requestedAt: req.requestTime,
     data: {
       tours,
     },
@@ -23,6 +27,7 @@ const getTour = (req, res) => {
   if (id > tours.length) {
     return res.status(404).json({
       status: "not found",
+      requestedAt: req.requestTime,
       message: "Invaild ID",
     });
   }
@@ -31,6 +36,7 @@ const getTour = (req, res) => {
 
   res.status(200).json({
     status: "success",
+    requestedAt: req.requestTime,
     data: {
       tour,
     },
@@ -45,6 +51,7 @@ const postTour = (req, res) => {
     if (err) throw err;
     res.status(201).json({
       status: "created",
+      requestedAt: req.requestTime,
       results: tours.length,
       data: {
         newTour,
@@ -57,11 +64,13 @@ const updateTour = (req, res) => {
   if (id > tours.length) {
     return res.status(404).json({
       status: "not found",
+      requestedAt: req.requestTime,
       message: "Invaild ID",
     });
   }
   res.status(200).json({
     status: "success",
+    requestedAt: req.requestTime,
     data: {
       tour: "<Updated tour here...>",
     },
@@ -72,11 +81,13 @@ const deleteTour = (req, res) => {
   if (id > tours.length) {
     return res.status(404).json({
       status: "not found",
+      requestedAt: req.requestTime,
       message: "Invaild ID",
     });
   }
   res.status(204).json({
     status: "success",
+    requestedAt: req.requestTime,
     data: null,
   });
 }
