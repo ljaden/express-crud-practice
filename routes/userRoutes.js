@@ -1,32 +1,13 @@
 const express = require("express");
-// route controllers
-const getAllUsers = (req, res) => {
-  res.status(500).json({
-    status: "This route is not yet defined!",
-  });
-};
-const getUser = (req, res) => {
-  res.status(500).json({
-    status: "This route is not yet defined!",
-  });
-};
-const createUser = (req, res) => {
-  res.status(500).json({
-    status: "This route is not yet defined!",
-  });
-};
-const updateUser = (req, res) => {
-  res.status(500).json({
-    status: "This route is not yet defined!",
-  });
-};
-const deleteUser = (req, res) => {
-  res.status(500).json({
-    status: "This route is not yet defined!",
-  });
-};
-
 const router = express.Router();
+// import controller
+const {
+  getAllUsers,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+} = require("../controller/userController");
 
 router.route("/").get(getAllUsers).post(createUser);
 router.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);

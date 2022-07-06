@@ -1,5 +1,3 @@
-const fs = require("fs");
-
 const express = require("express");
 const app = express();
 // import router modules
@@ -16,7 +14,4 @@ app.use((req, res, next) => {
 app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
 
-const port = process.env.PORT || 8000;
-app.listen(port, () => {
-  console.log(`Port: ${port}`);
-});
+module.exports = app;
