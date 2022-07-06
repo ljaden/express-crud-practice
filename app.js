@@ -118,25 +118,34 @@ const deleteUser = (req, res) => {
     status: "This route is not yet defined!",
   });
 };
+
+const tourRouter = express.Router()
+const userRouter = express.Router()
+
 /* TOURS routes*/
-// GET
-app.get("/api/v1/tours", getAllTours);
-// GET /:id
-app.get("/api/v1/tours/:id", getTour);
-// POST
-app.post("/api/v1/tours", postTour);
-// PATCH
-app.patch("/api/v1/tours/:id", updateTour);
-// DELETE
-app.delete("/api/v1/tours/:id", deleteTour);
+tourRouter
+  .route('/')
+  .get(getAllTours)
+  .post(postTour)
+tourRouter
+  .route('/:id')
+  .get(getTour)
+  .patch(updateTour)
+  .delete(deleteTour)
 
 /* USERS routes*/
-// GET
-app.get("/api/v1/users", getAllUsers);
-app.get("/api/v1/users/:id", getUser);
-app.post("/api/v1/users", createUser);
-app.patch("/api/v1/users/:id", updateUser);
-app.delete("/api/v1/users/:id", deleteUser);
+userRouter
+  .route('/')
+  .get(getAllUsers)
+  .post(createUser)
+userRouter
+  .route('/:id')
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser)
+
+app.use('/api/v1/tours', tourRouter)
+app.use('/api/v1/users', userRouter)
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
