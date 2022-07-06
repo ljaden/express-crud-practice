@@ -5,13 +5,14 @@ const app = express();
 
 // middleware - function that can modifyy the incoming request
 app.use(express.json());
-app.use((req,res,next) => {
+app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
-})
+});
 // data
 const tours = JSON.parse(fs.readFileSync("./data/tours-simple.json"));
 
+// Route handlers(controllers) - Tours
 const getAllTours = (req, res) => {
   res.status(200).json({
     status: "success",
@@ -75,7 +76,7 @@ const updateTour = (req, res) => {
       tour: "<Updated tour here...>",
     },
   });
-}
+};
 const deleteTour = (req, res) => {
   const id = req.params.id * 1;
   if (id > tours.length) {
@@ -90,8 +91,34 @@ const deleteTour = (req, res) => {
     requestedAt: req.requestTime,
     data: null,
   });
-}
-
+};
+// Route handlers(controllers) - Users
+const getAllUsers = (req, res) => {
+  res.status(500).json({
+    status: "This route is not yet defined!",
+  });
+};
+const getUser = (req, res) => {
+  res.status(500).json({
+    status: "This route is not yet defined!",
+  });
+};
+const createUser = (req, res) => {
+  res.status(500).json({
+    status: "This route is not yet defined!",
+  });
+};
+const updateUser = (req, res) => {
+  res.status(500).json({
+    status: "This route is not yet defined!",
+  });
+};
+const deleteUser = (req, res) => {
+  res.status(500).json({
+    status: "This route is not yet defined!",
+  });
+};
+/* TOURS routes*/
 // GET
 app.get("/api/v1/tours", getAllTours);
 // GET /:id
@@ -102,6 +129,14 @@ app.post("/api/v1/tours", postTour);
 app.patch("/api/v1/tours/:id", updateTour);
 // DELETE
 app.delete("/api/v1/tours/:id", deleteTour);
+
+/* USERS routes*/
+// GET
+app.get("/api/v1/users", getAllUsers);
+app.get("/api/v1/users/:id", getUser);
+app.post("/api/v1/users", createUser);
+app.patch("/api/v1/users/:id", updateUser);
+app.delete("/api/v1/users/:id", deleteUser);
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
