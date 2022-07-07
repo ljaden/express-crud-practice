@@ -4,6 +4,9 @@ const app = express();
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
 
+// serve static files
+app.use(express.static("public"));
+
 // middleware - function that can modify the incoming request
 app.use(express.json());
 app.use((req, res, next) => {
