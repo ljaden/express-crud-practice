@@ -15,16 +15,7 @@ const getAllTours = (req, res) => {
   });
 };
 const getTour = (req, res) => {
-  const id = req.params.id * 1;
-  if (id > tours.length) {
-    return res.status(404).json({
-      status: "not found",
-      requestedAt: req.requestTime,
-      message: "Invaild ID",
-    });
-  }
-
-  const tour = tours.filter((el) => el.id === id);
+  const tour = tours.filter((el) => el.id === req.params.id);
 
   res.status(200).json({
     status: "success",
@@ -52,14 +43,6 @@ const postTour = (req, res) => {
   });
 };
 const updateTour = (req, res) => {
-  const id = req.params.id * 1;
-  if (id > tours.length) {
-    return res.status(404).json({
-      status: "not found",
-      requestedAt: req.requestTime,
-      message: "Invaild ID",
-    });
-  }
   res.status(200).json({
     status: "success",
     requestedAt: req.requestTime,
@@ -69,7 +52,15 @@ const updateTour = (req, res) => {
   });
 };
 const deleteTour = (req, res) => {
-  const id = req.params.id * 1;
+  res.status(204).json({
+    status: "success",
+    requestedAt: req.requestTime,
+    data: null,
+  });
+};
+const checkId = (req, res, next, val) => {
+  console.log(`TourID: ${val}`);
+  const id = val * 1;
   if (id > tours.length) {
     return res.status(404).json({
       status: "not found",
@@ -77,11 +68,19 @@ const deleteTour = (req, res) => {
       message: "Invaild ID",
     });
   }
-  res.status(204).json({
-    status: "success",
-    requestedAt: req.requestTime,
-    data: null,
-  });
+  next();
+};
+
+const checkBody = (req, res, next) => {
+  console.log(req.body);
+  if (!req.body.name || !req.body.price) {
+    return res.status(400).json({
+      status: "failed",
+      requestedAt: req.requestTime,
+      message: "Missing name and/or price",
+    });
+  }
+  next();
 };
 
 module.exports = {
@@ -90,4 +89,6 @@ module.exports = {
   postTour: postTour,
   updateTour: updateTour,
   deleteTour: deleteTour,
+  checkId: checkId,
+  checkBody: checkBody,
 };
